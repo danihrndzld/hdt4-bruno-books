@@ -44,7 +44,6 @@ Una carpeta `bruno/` con tres colecciones, cada una con su `bruno.json` y un ent
 | Colección | Contenido |
 |---|---|
 | `smoke/` | 3 a 5 requests. El servicio responde y los caminos principales viven. |
-| `integracion/` | Al menos un flujo encadenado: crear, leer el id capturado, modificar, borrar y comprobar el 404. Los valores pasan entre requests con variables, no escritos a mano. |
 | `regresion/` | Entre 10 y 15 requests diseñados con técnicas de ISTQB. Al menos tres técnicas distintas entre partición de equivalencia, valores frontera, tabla de decisión y transición de estados. |
 
 Reglas para las tres:
