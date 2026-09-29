@@ -1,0 +1,49 @@
+// Arranca el API, corre una suite de Bruno contra él y publica el
+// reporte JUnit. bru run sale con 0 si todo pasa y con 1 si falla una
+// aserción; ese código de salida es la puerta.
+pipeline {
+  agent any
+  options {
+    skipDefaultCheckout()
+    timeout(time: 10, unit: 'MINUTES')
+  }
+  environment {
+    API        = 'api.py'
+    COLLECTION = 'bruno/smoke'
+    BRU_ENV    = 'local'
+  }
+  stages {
+    stage('Checkout') {
+      steps { checkout scm }
+    }
+    stage('Start API') {
+      steps {
+        // El API sobrevive a este sh; post lo apaga por su pid.
+        sh '''
+          nohup uv run "$API" > api.log 2>&1 &
+          echo $! > api.pid
+          for i in $(seq 1 60); do
+            curl -sf http://127.0.0.1:8000/health && exit 0
+            sleep 1
+          done
+          cat api.log; exit 1
+        '''
+      }
+    }
+    stage('Bruno') {
+      steps {
+        // bru escribe el reporte relativo al directorio actual y no crea
+        // carpetas (sale con 2), así que el reporte queda en la colección.
+        dir(env.COLLECTION) {
+          sh 'bru run --env "$BRU_ENV" --sandbox=developer --reporter-junit results.xml'
+        }
+      }
+    }
+  }
+  post {
+    always {
+      junit allowEmptyResults: true, testResults: "${env.COLLECTION}/results.xml"
+      sh 'kill "$(cat api.pid)" 2>/dev/null || true'
+    }
+  }
+}

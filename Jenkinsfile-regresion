@@ -1,7 +1,6 @@
-// Declarative pipeline: start the books API, run the Bruno smoke suite
-// against it, publish the JUnit report. `bru run` exits 0 on pass and 1 on
-// an assertion failure; that exit code is the gate.
-//
+// Arranca el API, corre una suite de Bruno contra él y publica el
+// reporte JUnit. bru run sale con 0 si todo pasa y con 1 si falla una
+// aserción; ese código de salida es la puerta.
 pipeline {
   agent any
   options {
@@ -10,7 +9,7 @@ pipeline {
   }
   environment {
     API        = 'api.py'
-    COLLECTION = 'bruno/smoke'
+    COLLECTION = 'bruno/regresion'
     BRU_ENV    = 'local'
   }
   stages {
@@ -19,7 +18,7 @@ pipeline {
     }
     stage('Start API') {
       steps {
-        // The API outlives this sh step; the post block kills it by pid.
+        // El API sobrevive a este sh; post lo apaga por su pid.
         sh '''
           nohup uv run "$API" > api.log 2>&1 &
           echo $! > api.pid
@@ -31,13 +30,10 @@ pipeline {
         '''
       }
     }
-    stage('Smoke') {
+    stage('Bruno') {
       steps {
-        // bru writes the report relative to the working directory and does
-        // not create missing folders (exit 2), so the report stays in place.
-        // --sandbox=developer: bru 4.2's default QuickJS sandbox fails at
-        // random under CPU load ("reading 'newContext'"), a red build with
-        // every assertion correct. Measured 9/30 runs vs 0/30.
+        // bru escribe el reporte relativo al directorio actual y no crea
+        // carpetas (sale con 2), así que el reporte queda en la colección.
         dir(env.COLLECTION) {
           sh 'bru run --env "$BRU_ENV" --sandbox=developer --reporter-junit results.xml'
         }
