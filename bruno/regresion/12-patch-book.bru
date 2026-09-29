@@ -1,0 +1,23 @@
+meta {
+  name: Edit one field
+  type: http
+  seq: 12
+}
+
+patch {
+  url: {{baseUrl}}/books/1
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "copies": 4
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.copies: eq 4
+  res.body.title: eq Grokking Continuous Delivery
+}

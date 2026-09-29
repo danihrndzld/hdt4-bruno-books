@@ -1,0 +1,24 @@
+meta {
+  name: Create a book
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/books
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "Continuous Delivery",
+    "author": "Humble & Farley",
+    "year": 2010
+  }
+}
+
+assert {
+  res.status: eq 201
+  res.body.title: eq Continuous Delivery
+}

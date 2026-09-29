@@ -1,0 +1,16 @@
+meta {
+  name: Reset to seed data
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/reset
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.books: eq 3
+}

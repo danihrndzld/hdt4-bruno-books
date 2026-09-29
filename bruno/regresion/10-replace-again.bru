@@ -1,0 +1,30 @@
+meta {
+  name: PUT is idempotent
+  type: http
+  seq: 10
+}
+
+put {
+  url: {{baseUrl}}/books/1
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "Grokking Continuous Delivery",
+    "author": "Christie Wilson",
+    "year": 2022,
+    "copies": 7
+  }
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  test("the same PUT sent twice leaves the same resource", function() {
+    expect(JSON.stringify(res.getBody())).to.equal(bru.getVar("afterFirstPut"));
+  });
+}

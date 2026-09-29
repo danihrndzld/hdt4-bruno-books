@@ -1,0 +1,34 @@
+meta {
+  name: Create a book
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/books
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "Continuous Delivery",
+    "author": "Humble & Farley",
+    "year": 2010
+  }
+}
+
+assert {
+  res.status: eq 201
+  res.body.copies: eq 1
+}
+
+script:post-response {
+  bru.setVar("bookId", res.body.id);
+}
+
+tests {
+  test("Location points at the book that was just created", function() {
+    expect(res.getHeader("location")).to.equal("/books/" + res.getBody().id);
+  });
+}

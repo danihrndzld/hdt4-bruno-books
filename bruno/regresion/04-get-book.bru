@@ -1,0 +1,18 @@
+meta {
+  name: Read one book
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/books/1
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.id: eq 1
+  res.body.author: eq Christie Wilson
+  res.body.year: eq 2022
+}

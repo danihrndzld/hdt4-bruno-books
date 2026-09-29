@@ -1,0 +1,23 @@
+meta {
+  name: An empty title is rejected
+  type: http
+  seq: 18
+}
+
+post {
+  url: {{baseUrl}}/books
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "",
+    "author": "Nobody",
+    "year": 2000
+  }
+}
+
+assert {
+  res.status: eq 422
+}

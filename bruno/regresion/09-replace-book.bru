@@ -1,0 +1,29 @@
+meta {
+  name: Replace a book whole
+  type: http
+  seq: 9
+}
+
+put {
+  url: {{baseUrl}}/books/1
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "Grokking Continuous Delivery",
+    "author": "Christie Wilson",
+    "year": 2022,
+    "copies": 7
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.copies: eq 7
+}
+
+script:post-response {
+  bru.setVar("afterFirstPut", JSON.stringify(res.body));
+}

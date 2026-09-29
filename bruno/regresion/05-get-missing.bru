@@ -1,0 +1,15 @@
+meta {
+  name: Read a book that is not there
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/books/999
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 404
+}

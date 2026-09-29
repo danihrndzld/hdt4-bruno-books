@@ -1,0 +1,21 @@
+meta {
+  name: HEAD returns headers only
+  type: http
+  seq: 16
+}
+
+head {
+  url: {{baseUrl}}/books/1
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  test("there is no body to read", function() {
+    expect(res.getHeader("content-length")).to.equal("0");
+  });
+}

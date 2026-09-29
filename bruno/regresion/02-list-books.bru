@@ -1,0 +1,21 @@
+meta {
+  name: List books
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/books
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  test("lists the three seeded books", function() {
+    expect(res.getBody().length).to.equal(3);
+  });
+}

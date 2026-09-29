@@ -1,0 +1,21 @@
+meta {
+  name: List books
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/books
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  test("the seed data is there", function() {
+    expect(res.getBody().length).to.equal(3);
+  });
+}

@@ -1,0 +1,15 @@
+meta {
+  name: Delete the same book again
+  type: http
+  seq: 14
+}
+
+delete {
+  url: {{baseUrl}}/books/3
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 404
+}

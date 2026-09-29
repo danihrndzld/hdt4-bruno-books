@@ -1,0 +1,31 @@
+meta {
+  name: POST is not idempotent
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/books
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "Continuous Delivery",
+    "author": "Humble & Farley",
+    "year": 2010
+  }
+}
+
+assert {
+  res.status: eq 201
+}
+
+tests {
+  test("the same POST sent twice creates a second record", function() {
+    const previous = bru.getVar("bookId");
+    expect(previous, "bookId is not set: request 06 has to run first").to.not.be.undefined;
+    expect(res.getBody().id).to.not.equal(Number(previous));
+  });
+}

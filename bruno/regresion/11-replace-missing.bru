@@ -1,0 +1,23 @@
+meta {
+  name: Replace a book that is not there
+  type: http
+  seq: 11
+}
+
+put {
+  url: {{baseUrl}}/books/999
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "Ghost",
+    "author": "Nobody",
+    "year": 2000
+  }
+}
+
+assert {
+  res.status: eq 404
+}

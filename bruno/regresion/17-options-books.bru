@@ -1,0 +1,16 @@
+meta {
+  name: OPTIONS advertises the methods
+  type: http
+  seq: 17
+}
+
+options {
+  url: {{baseUrl}}/books
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 204
+  res.headers.allow: eq GET, POST, OPTIONS
+}

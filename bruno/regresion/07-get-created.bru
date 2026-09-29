@@ -1,0 +1,16 @@
+meta {
+  name: Read the book that was just created
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/books/{{bookId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.title: eq Continuous Delivery
+}
