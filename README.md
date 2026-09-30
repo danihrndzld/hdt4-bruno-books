@@ -1,7 +1,7 @@
 # HDT 4: suites de Bruno contra un API
 
 Asigna: jueves 24 de septiembre.
-Entrega: Martes 28 de sept 23:59. 
+Entrega: jueves 1 de octubre, 23:59.
 ## El API
 
 ```bash
